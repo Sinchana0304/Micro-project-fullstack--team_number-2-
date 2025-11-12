@@ -1,0 +1,21 @@
+<div class="bg-light border-end" id="sidebar-wrapper">
+    <div class="sidebar-heading text-primary">Disaster Relief</div>
+    <div class="list-group list-group-flush">
+        <a href="{% url 'user_profile' %}" class="list-group-item list-group-item-action">Profile</a>
+
+        {% if request.user.role == 'organiser' %}
+            <a href="{% url 'organiser_dashboard' %}" class="list-group-item list-group-item-action">Dashboard</a>
+            <a href="{% url 'post_disaster' %}" class="list-group-item list-group-item-action">Disasters</a>
+            <a href="{% url 'organiser_donations' %}" class="list-group-item list-group-item-action">Donations</a>
+            <a href="{% url 'organiser_messages' %}" class="list-group-item list-group-item-action">Messages</a>
+            <a href="{% url 'organiser_feedback' %}" class="list-group-item list-group-item-action">Feedback</a>
+        {% elif request.user.role == 'donor' %}
+            <a href="{% url 'donor_dashboard' %}" class="list-group-item list-group-item-action">Dashboard</a>
+            <a href="{% url 'donor_donations' %}" class="list-group-item list-group-item-action">Donations</a>
+            <a href="{% url 'donor_messages' %}" class="list-group-item list-group-item-action">Messages</a>
+            <a href="{% url 'donor_feedback' %}" class="list-group-item list-group-item-action">Feedback</a>
+        {% endif %}
+
+        <a href="{% url 'logout' %}" class="list-group-item list-group-item-action text-danger">Logout</a>
+    </div>
+</div>

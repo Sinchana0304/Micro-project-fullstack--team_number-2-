@@ -1,0 +1,12 @@
+<h2>Your Messages</h2>
+<ul class="list-group mt-3">
+    {% for message in messages %}
+        <li class="list-group-item">
+            From: <strong>{{ message.sender.username }}</strong>
+            <br><small>{{ message.content }}</small>
+            <br><span class="text-muted">{{ message.timestamp|date:"M d, Y H:i" }}</span>
+        </li>
+    {% empty %}
+        <li class="list-group-item">No messages received yet.</li>
+    {% endfor %}
+</ul>

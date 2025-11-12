@@ -1,0 +1,18 @@
+<h2>Donate to {{ disaster.title }}</h2>
+
+<div class="mb-3">
+    <p><strong>Bank Account Name:</strong> {{ disaster.bank_account_name }}</p>
+    <p><strong>Account Number:</strong> {{ disaster.bank_account_number }}</p>
+    <p><strong>IFSC Code:</strong> {{ disaster.ifsc_code }}</p>
+    {% if disaster.upi_id %}
+        <p><strong>UPI ID:</strong> {{ disaster.upi_id }}</p>
+    {% endif %}
+</div>
+
+<hr>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Submit Donation</button>
+</form>

@@ -1,0 +1,13 @@
+<h2>Your Feedback</h2>
+<ul class="list-group mt-3">
+    {% for feedback in feedbacks %}
+        <li class="list-group-item">
+            <strong>{{ feedback.disaster.title }}</strong> – {{ feedback.organiser.username }}
+            <br>Rating: {{ feedback.rating }}★
+            <br><small>{{ feedback.comment }}</small>
+            <br><span class="text-muted">{{ feedback.submitted_at|date:"M d, Y H:i" }}</span>
+        </li>
+    {% empty %}
+        <li class="list-group-item">No feedback submitted yet.</li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,12 @@
+<h2>Your Donations</h2>
+<ul class="list-group mt-3">
+    {% for donation in donations %}
+        <li class="list-group-item">
+            ₹{{ donation.amount }} to <strong>{{ donation.disaster.title }}</strong>
+            <br><small>{{ donation.message }}</small>
+            <br><span class="text-muted">{{ donation.donated_at|date:"M d, Y H:i" }}</span>
+        </li>
+    {% empty %}
+        <li class="list-group-item">You haven't donated yet.</li>
+    {% endfor %}
+</ul>

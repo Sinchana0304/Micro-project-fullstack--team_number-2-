@@ -1,0 +1,21 @@
+<h2>Messages for {{ disaster.title }}</h2>
+
+<div class="mb-4">
+    {% for msg in messages %}
+        <div class="mb-2">
+            <strong>{{ msg.sender.username }}</strong>:
+            <span>{{ msg.content }}</span>
+            <br>
+            <small class="text-muted">{{ msg.timestamp|date:"M d, Y H:i" }}</small>
+        </div>
+    {% empty %}
+        <p>No messages yet.</p>
+    {% endfor %}
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Send</button>
+    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Back</a>
+</form>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Organiser Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { display: flex; min-height: 100vh; margin: 0; }
+        #sidebar {
+            width: 250px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+        }
+        #main {
+            flex-grow: 1;
+            padding: 30px;
+        }
+        .card { margin-bottom: 20px; }
+        .nav-link:hover { background-color: #e9ecef; }
+        .btn-sm { margin-right: 5px; }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <h4 class="text-primary">Disaster Management</h4>
+        <ul class="nav flex-column mt-4">
+            <li class="nav-item"><a class="nav-link" href="{% url 'organiser_dashboard' %}">Dashboard</a></li>
+             <li class="nav-item"><a class="nav-link" href="{% url 'user_profile' %}">Profile</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'post_disaster' %}">Disasters</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'organiser_donations' %}">Donations</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'organiser_messages' %}">Messages</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'organiser_feedback' %}">Feedback</a></li>
+            <li class="nav-item"><a class="nav-link text-danger" href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main">
+        <h2>Welcome, {{ request.user.username }} (Organiser)</h2>
+        <p>Average Rating: ⭐ {{ avg_rating }}/5</p>
+
+        <!-- Summary Cards -->
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="card text-white bg-primary">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ total_count }} Total Disasters</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-warning">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ active_count }} Active Disasters</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-success">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ donation_count }} Total Donations</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-info">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ volunteer_count }} Total Volunteers</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post Button -->
+        <a href="{% url 'post_disaster' %}" class="btn btn-primary mb-4">Post New Disaster</a>
+
+        <!-- Recent Disasters -->
+        <h4>Recent Disasters</h4>
+        <ul class="list-group">
+            {% for disaster in disasters %}
+                <li class="list-group-item">
+                    <strong>{{ disaster.title }}</strong> - {{ disaster.location }}
+                    <br>
+                    <small>{{ disaster.description }}</small>
+                    <br>
+                    <span class="badge bg-secondary">{{ disaster.urgency_level|title }}</span>
+                    <span class="text-muted float-end">{{ disaster.posted_at|date:"M d, Y" }}</span>
+                    <div class="mt-2">
+                        <a href="{% url 'view_disaster' disaster.pk %}" class="btn btn-sm btn-outline-info">View</a>
+                        <a href="{% url 'edit_disaster' disaster.pk %}" class="btn btn-sm btn-outline-warning">Edit</a>
+                        <a href="{% url 'delete_disaster' disaster.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                        <a href="{% url 'message_thread' disaster.pk %}" class="btn btn-sm btn-outline-secondary">Messages</a>
+                    </div>
+                </li>
+            {% empty %}
+                <li class="list-group-item">No disasters posted yet.</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Recent Feedback -->
+        <h4 class="mt-5">Recent Feedback</h4>
+        <ul class="list-group">
+            {% for fb in feedbacks %}
+                <li class="list-group-item">
+                    {{ fb.rating }}★ from <strong>{{ fb.donor.username }}</strong>
+                    <br>
+                    <small>{{ fb.comment }}</small>
+                    <br>
+                    <span class="text-muted">{{ fb.submitted_at|date:"M d, Y H:i" }}</span>
+                </li>
+            {% empty %}
+                <li class="list-group-item">No feedback received yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Donor Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="d-flex">
+    {% include 'core/sidebar.html' %}
+    <div class="container mt-4">
+        <h2>Welcome, {{ request.user.username }} (Donor)</h2>
+
+        <!-- Available Disasters -->
+        <h4>Available Disasters</h4>
+        <ul class="list-group mb-4">
+            {% for disaster in disasters %}
+                <li class="list-group-item">
+                    <strong>{{ disaster.title }}</strong> - {{ disaster.location }}
+                    <br>
+                    <small>{{ disaster.description }}</small>
+                    <br>
+                    <a href="{% url 'donate_to_disaster' disaster.pk %}" class="btn btn-sm btn-success mt-2">Donate</a>
+                    <a href="{% url 'message_thread' disaster.pk %}" class="btn btn-sm btn-outline-secondary mt-2">Message</a>
+                    <a href="{% url 'submit_feedback' disaster.pk %}" class="btn btn-sm btn-outline-warning mt-2">Feedback</a>
+                </li>
+            {% empty %}
+                <li class="list-group-item">No disasters available.</li>
+            {% endfor %}
+        </ul>
+
+        <!-- Donation History -->
+        <h4>Your Donations</h4>
+        <ul class="list-group">
+            {% for donation in donations %}
+                <li class="list-group-item">
+                    You donated ₹{{ donation.amount }} to <strong>{{ donation.disaster.title }}</strong>
+                    <br>
+                    <small>{{ donation.message }}</small>
+                    <br>
+                    <span class="text-muted">{{ donation.donated_at|date:"M d, Y H:i" }}</span>
+                </li>
+            {% empty %}
+                <li class="list-group-item">No donations yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+</body>
+</html>
